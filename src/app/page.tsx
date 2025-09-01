@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Suspense } from 'react';
+import SplitText from './components/SplitText';
 import Image from "next/image";
 import Threads from "./components/Threads";
 import ProjectsPage from "./pages/projects";
@@ -34,6 +36,17 @@ export default function Home() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  
+  // Handle initial scroll position
+  useEffect(() => {
+    // Remove any hash from the URL
+    if (window.location.hash) {
+      window.history.replaceState(null, '', ' ');
+    }
+    
+    // Scroll to top on initial load
+    window.scrollTo(0, 0);
+  }, []);
   
   // Close mobile menu when a link is clicked
   const closeMenu = () => {
@@ -197,18 +210,17 @@ export default function Home() {
               </div>
               
               <div className="relative z-10 flex flex-col items-center px-4 text-center">
-                <motion.h1 
-                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    ease: [0.16, 1, 0.3, 1],
-                    delay: 0.3
-                  }}
-                >
-                  Xai Bandala
-                </motion.h1>
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+                  <SplitText 
+                    text="Xai Bandala"
+                    splitType="chars"
+                    delay={0.03}
+                    duration={0.8}
+                    from={{ opacity: 0, y: 20 }}
+                    to={{ opacity: 1, y: 0 }}
+                    ease="power3.out"
+                  />
+                </h1>
                 <motion.p
                   className="mt-6 md:mt-8 max-w-2xl text-base md:text-lg leading-relaxed text-white/70"
                   initial={{ opacity: 0, y: 20 }}
