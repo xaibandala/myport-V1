@@ -4,11 +4,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useState, useEffect } from "react";
 import dynamic from 'next/dynamic';
 
-// Dynamically import components with no SSR
-const AnimatedContent = dynamic(() => import('./components/AnimatedContent'), {
-  ssr: false
-});
-
 const SplitText = dynamic(() => import('./components/SplitText'), {
   ssr: false
 });

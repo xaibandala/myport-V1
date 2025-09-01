@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
-import GooeyNav from "./GooeyNav";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 export type NavItem = { label: string; href: string };
@@ -81,25 +80,6 @@ export default function ResponsiveNav({ items, initialActiveIndex = 0, className
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Slightly tune gooey animation for users preferring reduced motion
-  const gooeyPerf = useMemo(() => {
-    if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return {
-        particleCount: 10,
-        particleDistances: [80, 8] as [number, number],
-        particleR: 90,
-        animationTime: 500,
-        timeVariance: 220,
-      };
-    }
-    return {
-      particleCount: 15,
-      particleDistances: [90, 10] as [number, number],
-      particleR: 100,
-      animationTime: 600,
-      timeVariance: 300,
-    };
-  }, []);
 
   return (
     <div className={`absolute top-4 right-4 z-20 ${className}`}>
@@ -152,25 +132,27 @@ export default function ResponsiveNav({ items, initialActiveIndex = 0, className
         )}
       </div>
 
-      {/* Desktop GooeyNav (hidden on small screens) */}
+      {/* Desktop Navigation (hidden on small screens) */}
       <div className="hidden sm:block">
-        <GooeyNav
-          items={items}
-          particleCount={gooeyPerf.particleCount}
-          particleDistances={gooeyPerf.particleDistances}
-          particleR={gooeyPerf.particleR}
-          initialActiveIndex={initialActiveIndex}
-          animationTime={gooeyPerf.animationTime}
-          timeVariance={gooeyPerf.timeVariance}
-          colors={[1, 2, 3, 1, 2, 3, 1, 4]}
-          onItemClick={(item) => {
-            if (item.href.startsWith('/')) {
-              router.push(item.href);
-            } else {
-              scrollToSection(item.href);
-            }
-          }}
-        />
+        <nav className="flex items-center space-x-6">
+          {items.map((item, index) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="text-sm font-medium text-white/80 hover:text-white transition-colors px-3 py-2 rounded-md"
+              onClick={(e) => {
+                e.preventDefault();
+                if (item.href.startsWith('/')) {
+                  router.push(item.href);
+                } else {
+                  scrollToSection(item.href);
+                }
+              }}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
       </div>
     </div>
   );
