@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import ClickSpark from "../components/ClickSpark";
 import SplitText from "../components/SplitText";
 import { motion } from "framer-motion";

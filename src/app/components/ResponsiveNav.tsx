@@ -11,7 +11,7 @@ type ResponsiveNavProps = {
   className?: string;
 };
 
-export default function ResponsiveNav({ items, initialActiveIndex = 0, className = "" }: ResponsiveNavProps) {
+export default function ResponsiveNav({ items, className = "" }: ResponsiveNavProps) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
@@ -135,7 +135,7 @@ export default function ResponsiveNav({ items, initialActiveIndex = 0, className
       {/* Desktop Navigation (hidden on small screens) */}
       <div className="hidden sm:block">
         <nav className="flex items-center space-x-6">
-          {items.map((item, index) => (
+          {items.map((item) => (
             <a
               key={item.href}
               href={item.href}

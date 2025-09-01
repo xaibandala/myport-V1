@@ -1,22 +1,8 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useState, useEffect } from "react";
-import dynamic from 'next/dynamic';
-
-const SplitText = dynamic(() => import('./components/SplitText'), {
-  ssr: false
-});
-
-// Test div to check if Tailwind is working
-const TailwindTest = () => (
-  <div className="p-4 bg-blue-500 text-white rounded-lg shadow-lg">
-    Tailwind is working! 🎉
-  </div>
-);
+import { motion } from "framer-motion";
+import { useState } from "react";
 import Image from "next/image";
-import ResponsiveNav from "./components/ResponsiveNav";
-import LogoLoop from "./components/LogoLoop";
 import Threads from "./components/Threads";
 import ProjectsPage from "./pages/projects";
 import ContactsPage from "./pages/contact";
@@ -42,9 +28,6 @@ const techStack = [
 // Education data will be added here
 
 export default function Home() {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   // Toggle mobile menu

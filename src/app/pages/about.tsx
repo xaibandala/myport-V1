@@ -51,12 +51,12 @@ export default function AboutPage() {
       >
         <div className="text-white/80 leading-7 md:leading-8 text-[15px] sm:text-base md:text-[19px] space-y-5 md:space-y-6">
           <p>
-            I'm a developer passionate about crafting performant, delightful web experiences. I enjoy working across the stack—from building
+            I&apos;m a developer passionate about crafting performant, delightful web experiences. I enjoy working across the stack—from building
             accessible, animated interfaces to designing robust APIs and data layers. I focus on clean architecture, thoughtful UX, and smooth
             motion to make products feel alive and intuitive.
           </p>
           <p>
-            Recently I've been exploring interactive canvases, micro-animations, and edge deployments. When I'm not coding, I'm learning new
+            Recently I&apos;ve been exploring interactive canvases, micro-animations, and edge deployments. When I&apos;m not coding, I&apos;m learning new
             design patterns, contributing to side projects, or experimenting with web graphics.
           </p>
         </div>
