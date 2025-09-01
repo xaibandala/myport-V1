@@ -18,31 +18,35 @@ export default function ResponsiveNav({ items, initialActiveIndex = 0, className
   const router = useRouter();
 
   const scrollToSection = (href: string): void => {
-    // If we're not on the home page, navigate there first
-    if (window.location.pathname !== '/') {
-      router.push(`/${href}`);
+    // If it's a path to another page, use Next.js router
+    if (href.startsWith('/')) {
+      // Close mobile menu if open
+      setOpen(false);
+      router.push(href);
       return;
     }
-
-    // Extract section ID from href (e.g., "/about" -> "about")
-    const sectionId = href.replace('/', '');
     
-    // Handle special cases
-    const sectionMap: Record<string, string> = {
-      'about': 'about-section',
-      'projects': 'projects-section', 
-      'certificates': 'certificates-section',
-      'contacts': 'contact-section'
-    };
+    // Handle section scrolling for the home page
+    if (window.location.pathname === '/') {
+      // Extract section ID from href (e.g., "about" -> "about-section")
+      const sectionMap: Record<string, string> = {
+        'about': 'about-section',
+        'projects': 'projects-section', 
+        'certificates': 'certificates-section',
+        'contact': 'contact-section'
+      };
 
-    const targetId = sectionMap[sectionId] || sectionId;
-    const targetElement = document.getElementById(targetId);
-    
-    if (targetElement) {
-      targetElement.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
+      const targetId = sectionMap[href] || href;
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        targetElement.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+        // Close mobile menu if open
+        setOpen(false);
+      }
     }
   };
 
@@ -159,6 +163,13 @@ export default function ResponsiveNav({ items, initialActiveIndex = 0, className
           animationTime={gooeyPerf.animationTime}
           timeVariance={gooeyPerf.timeVariance}
           colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+          onItemClick={(item) => {
+            if (item.href.startsWith('/')) {
+              router.push(item.href);
+            } else {
+              scrollToSection(item.href);
+            }
+          }}
         />
       </div>
     </div>

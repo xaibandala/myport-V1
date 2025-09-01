@@ -2,9 +2,6 @@
 import Image from "next/image";
 import ClickSpark from "../components/ClickSpark";
 import SplitText from "../components/SplitText";
-import AnimatedContent from "../components/AnimatedContent";
-import ResponsiveNav from "../components/ResponsiveNav";
-import Threads from "../components/Threads";
 import { motion } from "framer-motion";
 
 
@@ -50,24 +47,20 @@ const certificates = [
 
 export default function CertificatesPage() {
   return (
-    <div className="relative isolate min-h-screen w-full overflow-x-hidden bg-black text-white">
-      {/* Threads background (consistent with Home hero) */}
-      <div className="absolute inset-0 -z-10">
-        <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
-      </div>
-      {/* Top-right responsive nav */}
-      <ResponsiveNav
-        items={[
-          { label: "Home", href: "/" },
-          { label: "About", href: "/about" },
-          { label: "Projects", href: "/projects" },
-          { label: "Certificates", href: "/certificates" },
-          { label: "Contact", href: "/contacts" },
-        ]}
-        initialActiveIndex={3}
-      />
-      <ClickSpark sparkColor="#fff" sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
-        <div className="relative z-10 flex flex-col items-center px-4 text-center pt-24 md:pt-28 pb-16 md:pb-20">
+    <motion.div 
+      id="certificates-section"
+      className="relative isolate min-h-screen w-full overflow-x-hidden bg-black text-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
+    >
+<ClickSpark sparkColor="#fff" sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
+        <motion.div 
+          className="relative z-10 flex flex-col items-center px-4 text-center pt-24 md:pt-28 pb-16 md:pb-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
           <SplitText
             text="My Certificates"
             className="text-4xl md:text-6xl font-extrabold tracking-tight text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]"
@@ -83,89 +76,169 @@ export default function CertificatesPage() {
             useScrollTrigger={false}
           />
           {/* Subtitle under title */}
-          <AnimatedContent distance={20} duration={0.6} ease="power3.out" threshold={0.1}>
-            <p className="mt-3 md:mt-4 max-w-2xl mx-auto text-white/70 text-sm md:text-base leading-6 md:leading-7">
-              Certifications and achievements that reflect continuous learning and impact.
-            </p>
-          </AnimatedContent>
-          {/* Certificates content section (animated) */}
-          <AnimatedContent distance={80} duration={0.9} ease="power3.out" threshold={0.15}>
-            <section className="w-full max-w-6xl mx-auto text-left mt-10 md:mt-16">
+          <p className="mt-3 md:mt-4 max-w-2xl mx-auto text-white/70 text-sm md:text-base leading-6 md:leading-7">
+            Certifications and achievements that reflect continuous learning and impact.
+          </p>
+          {/* Certificates content section */}
+          <motion.section 
+              className="w-full max-w-6xl mx-auto text-left mt-10 md:mt-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 {certificates.map((c, i) => (
-                  <AnimatedContent
+                  <motion.div
                     key={c.title}
-                    direction="horizontal"
-                    reverse={i % 2 === 1}
-                    distance={40}
-                    duration={0.6}
-                    delay={i * 0.08}
-                    threshold={0.2}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: i * 0.1 }}
                   >
                     <motion.div
-                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_10px_50px_-12px_rgba(0,0,0,0.7)]"
-                      whileHover={{ y: -4 }}
-                      whileTap={{ scale: 0.99 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_50px_-12px_rgba(0,0,0,0.7)]"
+                      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                      whileInView={{ 
+                        opacity: 1, 
+                        y: 0, 
+                        scale: 1,
+                        transition: { 
+                          duration: 0.6, 
+                          delay: 0.5 + (i * 0.1),
+                          ease: [0.6, -0.05, 0.01, 0.99]
+                        }
+                      }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      whileHover={{ 
+                        y: -8,
+                        boxShadow: "0 15px 50px -12px rgba(0,0,0,0.5)",
+                        transition: { 
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 15
+                        }
+                      }}
+                      whileTap={{ scale: 0.98 }}
                     >
                       {/* Glow gradient */}
-                      <div
-                        className={`pointer-events-none absolute -inset-1 rounded-3xl bg-gradient-to-br ${c.accent} opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100`}
+                      <motion.div
+                        className={`pointer-events-none absolute -inset-1 rounded-3xl bg-gradient-to-br ${c.accent} opacity-0 blur-xl`}
                         aria-hidden="true"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileHover={{ 
+                          opacity: 1, 
+                          scale: 1.02,
+                          transition: { 
+                            duration: 0.5,
+                            ease: "easeOut"
+                          }
+                        }}
                       />
                       {/* Thumbnail */}
-                      <div className="relative aspect-[16/9] w-full overflow-hidden">
-                        <Image
-                          src={c.image}
-                          alt={c.alt}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                          priority={i === 0}
+                      <motion.div 
+                        className="relative aspect-[16/9] w-full overflow-hidden"
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                      >
+                        <motion.div
+                          initial={{ opacity: 0.8, scale: 1.05 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.8, ease: "easeOut" }}
+                          className="h-full w-full"
+                        >
+                          <Image
+                            src={c.image}
+                            alt={c.alt}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            className="object-cover transition-transform duration-700 ease-out"
+                            priority={i === 0}
+                          />
+                        </motion.div>
+                        <motion.div 
+                          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"
+                          initial={{ opacity: 0.7 }}
+                          whileHover={{ opacity: 0.5 }}
+                          transition={{ duration: 0.3 }}
                         />
-                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                      </div>
+                      </motion.div>
                       {/* Content */}
                       <div className="relative p-6 md:p-7">
-                        <h3 className="text-white/95 font-semibold text-lg md:text-xl">
+                        <motion.h3 
+                          className="text-white/95 font-semibold text-lg md:text-xl"
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.1 }}
+                        >
                           {c.title}
-                        </h3>
-                        <p className="text-white/65 text-sm md:text-base mt-1">
+                        </motion.h3>
+                        <motion.p 
+                          className="text-white/65 text-sm md:text-base mt-1"
+                          initial={{ opacity: 0, y: 5 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.15 }}
+                        >
                           {c.issuer} • {c.year}
-                        </p>
+                        </motion.p>
                         <div className="mt-5">
                           <motion.a
                             href={c.url}
                             target={c.url?.startsWith("http") ? "_blank" : undefined}
                             rel={c.url?.startsWith("http") ? "noopener noreferrer" : undefined}
-                            className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-medium text-white/90 transition-colors hover:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                            className="group/button inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-medium text-white/90 transition-colors hover:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                             aria-label={`View or verify certificate: ${c.title}`}
-                            whileHover={{ y: -1 }}
-                            whileTap={{ scale: 0.97 }}
+                            initial={{ opacity: 0, x: -5 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2, type: "spring", stiffness: 500 }}
+                            whileHover={{ 
+                              y: -2,
+                              backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                              boxShadow: '0 5px 15px -3px rgba(0, 0, 0, 0.2)',
+                              transition: { 
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 15
+                              }
+                            }}
+                            whileTap={{ scale: 0.96 }}
                           >
-                            <svg
+                            <motion.svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
                               fill="none"
                               stroke="currentColor"
                               strokeWidth="1.5"
                               className="h-4 w-4 opacity-80"
+                              initial={{ scale: 1 }}
+                              whileHover={{ 
+                                scale: 1.2,
+                                rotate: [0, -10, 10, -5, 0],
+                                transition: { 
+                                  rotate: { 
+                                    repeat: 1, 
+                                    duration: 0.6,
+                                    ease: "easeInOut"
+                                  }
+                                }
+                              }}
                             >
                               <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
                               <circle cx="12" cy="12" r="9" />
-                            </svg>
+                            </motion.svg>
                             <span>Verify</span>
                           </motion.a>
                         </div>
                       </div>
                     </motion.div>
-                  </AnimatedContent>
+                  </motion.div>
                 ))}
               </div>
-            </section>
-          </AnimatedContent>
-        </div>
+            </motion.section>
+        </motion.div>
       </ClickSpark>
-    </div>
+    </motion.div>
   );
 }

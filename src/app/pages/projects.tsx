@@ -1,12 +1,9 @@
 "use client";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import ClickSpark from "../components/ClickSpark";
 import SplitText from "../components/SplitText";
-import ResponsiveNav from "../components/ResponsiveNav";
-import Threads from "../components/Threads";
-import TargetCursor from "../components/TargetCursor";
+import { motion } from "framer-motion";
 
 // Lightweight project catalog (extend as needed)
 export const projects = [
@@ -92,23 +89,20 @@ export const projects = [
 
 export default function ProjectsPage() {
   return (
-    <div className="relative isolate min-h-screen w-full overflow-x-hidden bg-black text-white">
-      <TargetCursor spinDuration={2} hideDefaultCursor />
-      <div className="absolute inset-0 -z-10">
-        <Threads amplitude={1} distance={0} enableMouseInteraction={true} />
-      </div>
-      <ResponsiveNav
-        items={[
-          { label: "Home", href: "/" },
-          { label: "About", href: "/about" },
-          { label: "Projects", href: "/projects" },
-          { label: "Certificates", href: "/certificates" },
-          { label: "Contact", href: "/contacts" },
-        ]}
-        initialActiveIndex={2}
-      />
+    <motion.div 
+      id="projects-section"
+      className="relative isolate min-h-screen w-full overflow-x-hidden bg-black text-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
+    >
       <ClickSpark sparkColor="#fff" sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
-        <div className="relative z-10 flex flex-col items-center px-4 text-center pt-24 md:pt-28 pb-16 md:pb-20">
+        <motion.div 
+          className="relative z-10 flex flex-col items-center px-4 text-center pt-24 md:pt-28 pb-16 md:pb-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
           <SplitText
             text="My Projects"
             className="text-4xl md:text-6xl font-extrabold tracking-tight text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]"
@@ -118,34 +112,59 @@ export default function ProjectsPage() {
             splitType="chars"
             from={{ opacity: 0, y: 40 }}
             to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+            useScrollTrigger={false}
           />
           <p className="mt-3 md:mt-4 max-w-2xl mx-auto text-white/70 text-sm md:text-base leading-6 md:leading-7">
             Selected work and case studies focusing on performance, accessibility, and motion.
           </p>
-          <section className="w-full max-w-5xl mx-auto text-left mt-10 md:mt-16">
+          <motion.section 
+            className="w-full max-w-5xl mx-auto text-left mt-10 md:mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-              {projects.map((p) => (
-                <motion.div
+              {projects.map((p, i) => (
+                <motion.article
                   key={p.title}
-                  className="cursor-target group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_10px_50px_-12px_rgba(0,0,0,0.7)]"
-                  whileHover={{ y: -4 }}
-                  whileTap={{ scale: 0.99 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm"
+                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                  whileInView={{ 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1,
+                    transition: { 
+                      duration: 0.6, 
+                      delay: i * 0.1,
+                      ease: [0.16, 1, 0.3, 1]
+                    } 
+                  }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  whileHover={{ 
+                    y: -4,
+                    transition: { 
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 15,
+                      mass: 0.5
+                    }
+                  }}
                 >
-                  <div
-                    className={`pointer-events-none absolute -inset-1 rounded-3xl bg-gradient-to-br ${p.accent} opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100`}
-                    aria-hidden="true"
-                  />
                   <div className="relative aspect-[16/9] w-full overflow-hidden">
-                    <Image
-                      src={p.image}
-                      alt={p.alt}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                      priority={p.title === "AI Portfolio Site"}
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    <div className="h-full w-full">
+                      <Image
+                        src={p.image}
+                        alt={p.alt}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover"
+                        priority={p.title === "AI Portfolio Site"}
+                      />
+                    </div>
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
                   </div>
                   <div className="relative h-full p-5 md:p-6">
                     <div className="mb-3 flex items-start justify-between gap-3">
@@ -160,25 +179,54 @@ export default function ProjectsPage() {
                       {p.description}
                     </p>
                     <div className="mt-4 flex flex-wrap gap-2">
-                      {p.tech.map((t) => (
-                        <span
+                      {p.tech.map((t, techIndex) => (
+                        <motion.span
                           key={t}
-                          className="rounded-md border border-white/10 bg-white/[0.025] px-2 py-1 text-[11px] text-white/70"
+                          className="rounded-md border border-white/10 bg-white/[0.02] px-2 py-1 text-[11px] text-white/70 hover:bg-white/[0.04] hover:border-white/15 transition-colors duration-150"
+                          initial={{ opacity: 0, y: 5 }}
+                          whileInView={{ 
+                            opacity: 1, 
+                            y: 0,
+                            transition: { 
+                              delay: 0.4 + (techIndex * 0.03),
+                              duration: 0.25,
+                              ease: "easeOut"
+                            }
+                          }}
+                          viewport={{ once: true, margin: "-20px" }}
                         >
                           {t}
-                        </span>
+                        </motion.span>
                       ))}
                     </div>
-                    <div className="mt-5 flex items-center gap-2.5">
+                    <motion.div 
+                      className="mt-5 flex items-center gap-2.5"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ 
+                        opacity: 1, 
+                        y: 0,
+                        transition: { 
+                          delay: 0.2,
+                          duration: 0.3,
+                          ease: "easeOut"
+                        }
+                      }}
+                      viewport={{ once: true }}
+                    >
                       <motion.a
                         href={p.links.live}
                         target={p.links.live?.startsWith("http") ? "_blank" : undefined}
                         rel={p.links.live?.startsWith("http") ? "noopener noreferrer" : undefined}
-                        className="cursor-target inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-medium text-white/90 transition-colors hover:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                        className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-medium text-white/90 hover:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 transition-colors"
                         aria-label={`Open live demo for ${p.title}`}
-                        whileHover={{ y: -1 }}
-                        whileTap={{ scale: 0.98 }}
-                        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                        whileHover={{ y: -2, backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
+                        whileTap={{ scale: 0.96 }}
+                        transition={{ 
+                          type: "spring", 
+                          stiffness: 400, 
+                          damping: 15,
+                          mass: 0.5
+                        }}
                       >
                         <span>Live</span>
                         <svg
@@ -194,7 +242,7 @@ export default function ProjectsPage() {
                         href={p.links.code}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="cursor-target inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.02] px-3 py-2 text-xs font-medium text-white/80 transition-colors hover:bg-white/[0.05] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                        className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.02] px-3 py-2 text-xs font-medium text-white/80 hover:bg-white/[0.05] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 transition-colors"
                         aria-label={`View source code for ${p.title}`}
                         whileHover={{ y: -1 }}
                         whileTap={{ scale: 0.97 }}
@@ -213,19 +261,14 @@ export default function ProjectsPage() {
                         </svg>
                         <span>Code</span>
                       </motion.a>
-                    </div>
+                    </motion.div>
                   </div>
-                </motion.div>
+                </motion.article>
               ))}
             </div>
-          </section>
-          <div className="mt-16">
-            <Link href="/" className="text-white/70 hover:text-white transition-colors">
-              &larr; Back to Home
-            </Link>
-          </div>
-        </div>
+          </motion.section>
+        </motion.div>
       </ClickSpark>
-    </div>
+    </motion.div>
   );
 }

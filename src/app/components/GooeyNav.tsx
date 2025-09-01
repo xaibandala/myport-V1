@@ -18,6 +18,7 @@ type GooeyNavProps = {
   timeVariance?: number;
   colors?: number[];
   initialActiveIndex?: number;
+  onItemClick?: (item: GooeyNavItem) => void;
 };
 
 type Particle = {
@@ -38,6 +39,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
   timeVariance = 300,
   colors = [1, 2, 3, 1, 2, 3, 1, 4],
   initialActiveIndex = 0,
+  onItemClick,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const navRef = useRef<HTMLUListElement | null>(null);
@@ -244,29 +246,24 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
           ref={navRef}
           className="flex items-center gap-8 m-0 p-0"
         >
-          {items.map((item, index) => (
+          {items.map((item, i) => (
             <li
-              key={index}
-              className={`${activeIndex === index ? "active" : ""} inline-block`}
+              key={i}
+              className={`${activeIndex === i ? "active" : ""} inline-block`}
             >
               <a
                 href={item.href}
                 onClick={(e) => {
                   e.preventDefault();
                   const liEl = e.currentTarget.parentElement as HTMLLIElement;
-                  const item = items[index];
-                  
-                  activateIndex(index, liEl);
-                  
-                  // Handle Home navigation normally, others scroll to sections
-                  if (item.href === '/') {
-                    router.push('/');
+                  if (onItemClick) {
+                    onItemClick(item);
                   } else {
                     scrollToSection(item.href);
                   }
                 }}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                aria-current={activeIndex === index ? "page" : undefined}
+                onKeyDown={(e) => handleKeyDown(e, i)}
+                aria-current={activeIndex === i ? "page" : undefined}
                 className="inline-block px-3 py-2 cursor-pointer"
               >
                 {item.label}
