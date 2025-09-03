@@ -3,6 +3,7 @@ import Image from "next/image";
 import ClickSpark from "../components/ClickSpark";
 import SplitText from "../components/SplitText";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 // Lightweight project catalog (extend as needed)
 export const projects = [
@@ -88,13 +89,7 @@ export const projects = [
 
 export default function ProjectsPage() {
   return (
-    <motion.div 
-      id="projects-section"
-      className="relative isolate min-h-screen w-full overflow-x-hidden bg-black text-white"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeInOut" }}
-    >
+    <div id="projects-section" className="relative isolate min-h-screen w-full overflow-x-hidden bg-black text-white">
       <ClickSpark sparkColor="#fff" sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
         <motion.div 
           className="relative z-10 flex flex-col items-center px-4 text-center pt-24 md:pt-28 pb-16 md:pb-20"
@@ -119,17 +114,18 @@ export default function ProjectsPage() {
           <p className="mt-3 md:mt-4 max-w-2xl mx-auto text-white/70 text-sm md:text-base leading-6 md:leading-7">
             Selected work and case studies focusing on performance, accessibility, and motion.
           </p>
-          <motion.section 
+          <motion.div 
             className="w-full max-w-5xl mx-auto text-left mt-10 md:mt-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
               {projects.map((p, i) => (
                 <motion.article
                   key={p.title}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm"
+                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                   initial={{ opacity: 0, y: 30, scale: 0.95 }}
                   whileInView={{ 
                     opacity: 1, 
@@ -265,9 +261,9 @@ export default function ProjectsPage() {
                 </motion.article>
               ))}
             </div>
-          </motion.section>
+          </motion.div>
         </motion.div>
       </ClickSpark>
-    </motion.div>
+    </div>
   );
 }

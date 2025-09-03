@@ -79,15 +79,15 @@ export default function CertificatesPage() {
           <p className="mt-3 md:mt-4 max-w-2xl mx-auto text-white/70 text-sm md:text-base leading-6 md:leading-7">
             Certifications and achievements that reflect continuous learning and impact.
           </p>
-          {/* Certificates content section */}
+            {/* Certificates content section */}
           <motion.section 
-              className="w-full max-w-6xl mx-auto text-left mt-10 md:mt-16"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                {certificates.map((c, i) => (
+            className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left mt-10 md:mt-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {certificates.map((c, i) => (
                   <motion.div
                     key={c.title}
                     initial={{ opacity: 0, y: 30 }}
@@ -95,7 +95,7 @@ export default function CertificatesPage() {
                     transition={{ duration: 0.6, delay: i * 0.1 }}
                   >
                     <motion.div
-                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_50px_-12px_rgba(0,0,0,0.7)]"
+                      className="group relative h-full flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_50px_-12px_rgba(0,0,0,0.7)]"
                       initial={{ opacity: 0, y: 30, scale: 0.95 }}
                       whileInView={{ 
                         opacity: 1, 
@@ -163,7 +163,7 @@ export default function CertificatesPage() {
                         />
                       </motion.div>
                       {/* Content */}
-                      <div className="relative p-6 md:p-7">
+                      <div className="flex-1 p-6 md:p-7 flex flex-col">
                         <motion.h3 
                           className="text-white/95 font-semibold text-lg md:text-xl"
                           initial={{ opacity: 0, y: 10 }}

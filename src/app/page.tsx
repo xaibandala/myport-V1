@@ -29,7 +29,8 @@ const techStack = [
 
 // Education data will be added here
 
-export default function Home() {
+// Separate component for the main content to use with Suspense
+const MainContent = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   // Toggle mobile menu
@@ -238,9 +239,9 @@ export default function Home() {
 
             
 
-            {/* Tech Stack section - Optimized */}
+            {/* Tech Stack section - Cards Grid */}
             <motion.section 
-              className="relative z-10 w-full py-16 md:py-20 overflow-hidden"
+              className="relative z-10 w-full py-16 md:py-20"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -248,46 +249,32 @@ export default function Home() {
             >
               <div className="max-w-6xl xl:max-w-7xl mx-auto px-4">
                 <h2 className="text-center text-2xl md:text-3xl font-bold tracking-tight text-white mb-12">Tech Stack</h2>
-              </div>
-              <div className="relative w-full">
-                <div className="relative overflow-hidden">
-                  <div className="py-4">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4 md:gap-6">
+                  {techStack.map((tech, index) => (
                     <motion.div
-                      className="flex will-change-transform"
-                      animate={{ 
-                        x: ['0%', `-${100 / (techStack.length / 2)}%`] 
-                      }}
-                      transition={{
-                        x: {
-                          repeat: Infinity,
-                          repeatType: "loop",
-                          duration: techStack.length * 3,
-                          ease: "linear",
-                        }
-                      }}
+                      key={tech.name}
+                      className="flex flex-col items-center p-4 bg-white/5 rounded-lg backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
+                      whileHover={{ y: -4, scale: 1.05 }}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      viewport={{ once: true }}
                     >
-                      {[...techStack, ...techStack].map((tech, index) => (
-                        <div
-                          key={`${tech.name}-${index}`}
-                          className="flex-shrink-0 flex flex-col items-center gap-2 p-3 sm:p-4 w-24 sm:w-28 md:w-32"
-                        >
-                          <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 transition-transform duration-300 hover:scale-110">
-                            <Image
-                              src={tech.icon}
-                              alt={tech.name}
-                              width={48}
-                              height={48}
-                              className="w-full h-full object-contain"
-                              loading="lazy"
-                            />
-                          </div>
-                          <span className="text-xs sm:text-sm text-white/70 text-center whitespace-nowrap font-medium">
-                            {tech.name}
-                          </span>
-                        </div>
-                      ))}
+                      <div className="w-10 h-10 md:w-12 md:h-12 mb-2">
+                        <Image
+                          src={tech.icon}
+                          alt={tech.name}
+                          width={48}
+                          height={48}
+                          className="w-full h-full object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span className="text-xs md:text-sm text-white/80 text-center font-medium">
+                        {tech.name}
+                      </span>
                     </motion.div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </motion.section>
@@ -313,3 +300,14 @@ export default function Home() {
   );
 }
 
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-white text-lg">Loading...</div>
+      </div>
+    }>
+      <MainContent />
+    </Suspense>
+  );
+}
